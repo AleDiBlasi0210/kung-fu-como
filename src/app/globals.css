@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white text-black font-inter antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-cinzel;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 bg-red text-white font-semibold font-inter tracking-wide rounded-sm
+           transition-all duration-200 hover:bg-red-dark hover:scale-[1.02] active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-red/50;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center justify-center px-6 py-3 border-2 border-white text-white font-semibold font-inter tracking-wide rounded-sm
+           transition-all duration-200 hover:bg-white hover:text-black active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-white/50;
+  }
+
+  .btn-outline-red {
+    @apply inline-flex items-center justify-center px-6 py-3 border-2 border-red text-red font-semibold font-inter tracking-wide rounded-sm
+           transition-all duration-200 hover:bg-red hover:text-white active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-red/50;
+  }
+
+  .section-title {
+    @apply font-cinzel text-3xl md:text-4xl font-bold tracking-wide;
+  }
+
+  .section-subtitle {
+    @apply font-inter text-gray-mid text-lg leading-relaxed;
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+  }
+
+  .nav-link {
+    @apply font-inter text-sm font-medium tracking-widest uppercase transition-colors duration-150;
+  }
+
+  .red-accent {
+    @apply border-b-2 border-red pb-1;
+  }
+}
+
+@layer utilities {
+  .text-shadow {
+    text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  }
+
+  .text-shadow-lg {
+    text-shadow: 0 4px 16px rgba(0,0,0,0.8);
+  }
+}

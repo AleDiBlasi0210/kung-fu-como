@@ -1,0 +1,48 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Next.js: Dev Server",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm.cmd run dev",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Next.js: Debug Server",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm.cmd",
+      "runtimeArgs": ["run", "dev"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**"],
+      "serverReadyAction": {
+        "action": "startDebugging",
+        "name": "Open in Firefox",
+        "pattern": "- Local:\\s+(https?://\\S+)"
+      }
+    },
+    {
+      "name": "Open in Firefox",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "Start-Process -FilePath \"C:/Program Files/Mozilla Firefox/firefox.exe\" -ArgumentList \"http://localhost:3000\"",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Next.js: Start (Production)",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm.cmd run start",
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "build"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Next.js: Full Stack Debug",
+      "configurations": ["Next.js: Debug Server"]
+    }
+  ]
+}
