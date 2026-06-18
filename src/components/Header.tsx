@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 
 const navLinks = [
@@ -26,12 +25,14 @@ const navLinks = [
     ],
   },
   { label: 'Attività', href: '/attivita' },
+  { label: 'Istruttori', href: '/istruttori' },
   { label: 'News', href: '/news' },
   { label: 'Contatti', href: '/contatti' },
   { label: 'Partner', href: '/partner' },
 ]
 
 export default function Header() {
+  const publicBase = process.env.NEXT_PUBLIC_BASE_PATH || ''
   const [menuOpen, setMenuOpen] = useState(false)
   const [openDropdown, setOpenDropdown] = useState<string | null>(null)
   const [scrolled, setScrolled] = useState(false)
@@ -60,13 +61,10 @@ export default function Header() {
           <Link href="/" className="flex items-center gap-3 group">
             <div className="w-10 h-10 lg:w-12 lg:h-12 relative flex-shrink-0">
               <div className="w-full h-full rounded-full border-2 border-red bg-black/50 p-1 overflow-hidden">
-                <Image
-                  src="/logo.png"
+                <img
+                  src={`${publicBase}/logo.png`}
                   alt="Logo La Fenice Bianca"
-                  width={48}
-                  height={48}
                   className="w-full h-full object-contain"
-                  priority
                 />
               </div>
             </div>

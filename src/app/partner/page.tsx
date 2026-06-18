@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -30,6 +29,8 @@ const partners = [
   },
 ]
 
+const publicBase = process.env.NEXT_PUBLIC_BASE_PATH || ''
+
 export default function PartnerPage() {
   return (
     <>
@@ -59,11 +60,11 @@ export default function PartnerPage() {
                 className="group border border-gray-light rounded-sm p-6 card-hover hover:border-red/40"
               >
                 <div className="h-36 bg-gray-light rounded-sm flex items-center justify-center mb-5 p-4 relative overflow-hidden">
-                  <Image
-                    src={partner.image}
+                  <img
+                    src={`${publicBase}${partner.image}`}
                     alt={partner.name}
-                    fill
-                    className="object-contain p-4"
+                    className="w-full h-full object-contain p-2"
+                    loading="lazy"
                   />
                 </div>
                 <h2 className="font-cinzel text-2xl text-black font-semibold mb-3 leading-snug group-hover:text-red transition-colors">

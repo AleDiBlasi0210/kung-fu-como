@@ -20,6 +20,7 @@ jobs:
     env:
       NEXT_PUBLIC_SITE_URL: https://alediblasi0210.github.io/kung-fu-como
       BASE_PATH: /kung-fu-como
+      NEXT_PUBLIC_BASE_PATH: /kung-fu-como
     steps:
       - name: Checkout
         uses: actions/checkout@v4

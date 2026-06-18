@@ -12,6 +12,7 @@ const footerLinks = {
   ],
   pagine: [
     { label: 'Attività', href: '/attivita' },
+    { label: 'Istruttori', href: '/istruttori' },
     { label: 'News', href: '/news' },
     { label: 'Contatti', href: '/contatti' },
     { label: 'Partner', href: '/partner' },

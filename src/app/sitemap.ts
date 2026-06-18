@@ -7,6 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '',
     '/discipline/choy-li-fut',
     '/discipline/tai-chi-chuan',
+    '/istruttori',
     '/sedi',
     '/attivita',
     '/news',
