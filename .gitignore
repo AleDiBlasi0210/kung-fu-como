@@ -31,3 +31,10 @@ Thumbs.db
 # Misc
 coverage/
 .vercel/
+
+# Local Sanity Studio/build artifacts
+.sanity/
+dist/
+
+# Local debug artifacts
+build-pages.log

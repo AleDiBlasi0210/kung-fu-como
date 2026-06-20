@@ -35,13 +35,9 @@ const hasSanityConfig =
 const sanityFetchCacheMode: 'no-store' | 'force-cache' =
   process.env.NODE_ENV === 'development' ? 'no-store' : 'force-cache'
 
-const sanityStrictMode =
-  process.env.SANITY_STRICT_MODE === 'true' ||
-  process.env.NEXT_PUBLIC_SANITY_STRICT_MODE === 'true'
-
-// In strict mode, missing Sanity content throws explicit errors.
-// Default behavior keeps fallbacks enabled to avoid production/CI build breaks.
-const USE_SANITY_FALLBACKS = !sanityStrictMode
+// Enable fallbacks only when Sanity is not configured.
+// If Sanity is configured, missing content should fail loudly to surface gaps.
+const USE_SANITY_FALLBACKS = !hasSanityConfig
 
 function failMissingSanity(documentType: string): never {
   throw new Error(`Missing required Sanity content for type: ${documentType}`)

@@ -17,7 +17,6 @@ Create `.env.local` from `.env.example` and fill:
 - `NEXT_PUBLIC_SANITY_DATASET`
 - Optional `SANITY_STUDIO_PROJECT_ID` / `SANITY_STUDIO_DATASET`
 - Optional `NEXT_PUBLIC_SANITY_STUDIO_URL` to expose an "Area Admin" link in the footer
-- Optional `SANITY_STRICT_MODE=true` to force errors when Sanity content is missing (recommended only in local QA)
 
 Do not set `BASE_PATH` or `NEXT_PUBLIC_BASE_PATH` in local development unless you intentionally want to serve the app from `/kung-fu-como` on localhost. Those values are for the GitHub Pages deployment workflow.
 
