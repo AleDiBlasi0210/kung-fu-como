@@ -3,7 +3,6 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import ActivityGallery from '@/components/activities/ActivityGallery'
 import { getActivityEvents } from '@/sanity/content'
-import { sanityClient } from '@/sanity/client'
 
 export const dynamicParams = false
 
@@ -13,19 +12,11 @@ async function findEvent(year: string, slug: string) {
 }
 
 export async function generateStaticParams() {
-  try {
-    const events = await sanityClient.fetch<Array<{ year?: string; slug?: string }>>(
-      `*[_type == "event"]{ "year": string(year), "slug": slug.current }`,
-      {},
-      { cache: 'force-cache' },
-    )
+  const events = await getActivityEvents()
 
-    return (events || [])
-      .filter((event) => !!event.year && !!event.slug)
-      .map((event) => ({ year: event.year as string, slug: event.slug as string }))
-  } catch {
-    return []
-  }
+  return events
+    .filter((event) => !!event.year && !!event.slug)
+    .map((event) => ({ year: event.year, slug: event.slug }))
 }
 
 export async function generateMetadata({

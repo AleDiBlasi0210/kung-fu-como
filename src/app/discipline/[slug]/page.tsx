@@ -2,24 +2,15 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getDisciplineBySlug, getDisciplineProgramBySlug, getDisciplines } from '@/sanity/content'
-import { sanityClient } from '@/sanity/client'
 
 export const dynamicParams = false
 
 export async function generateStaticParams() {
-  try {
-    const disciplines = await sanityClient.fetch<Array<{ slug?: string }>>(
-      `*[_type == "discipline"]{ "slug": slug.current }`,
-      {},
-      { cache: 'force-cache' },
-    )
+  const disciplines = await getDisciplines()
 
-    return (disciplines || [])
-      .filter((discipline) => !!discipline.slug)
-      .map((discipline) => ({ slug: discipline.slug as string }))
-  } catch {
-    return []
-  }
+  return disciplines
+    .filter((discipline) => !!discipline.slug)
+    .map((discipline) => ({ slug: discipline.slug }))
 }
 
 export async function generateMetadata({
