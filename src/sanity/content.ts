@@ -32,6 +32,9 @@ const sanityProjectId =
 const hasSanityConfig =
   !!sanityProjectId && sanityProjectId !== 'placeholder-project-id'
 
+const sanityFetchCacheMode: 'no-store' | 'force-cache' =
+  process.env.NODE_ENV === 'development' ? 'no-store' : 'force-cache'
+
 // Use fallbacks when Sanity is not configured (e.g. CI without project vars),
 // so the static export build succeeds with bundled content.
 // When Sanity IS configured, keep false to surface missing content immediately.
