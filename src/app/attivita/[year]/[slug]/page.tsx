@@ -4,6 +4,8 @@ import Link from 'next/link'
 import ActivityGallery from '@/components/activities/ActivityGallery'
 import { getActivityEvents } from '@/sanity/content'
 
+export const dynamicParams = false
+
 async function findEvent(year: string, slug: string) {
   const events = await getActivityEvents()
   return events.find((event) => event.year === year && event.slug === slug)

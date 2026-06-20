@@ -3,6 +3,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getDisciplineBySlug, getDisciplineProgramBySlug, getDisciplines } from '@/sanity/content'
 
+export const dynamicParams = false
+
 export async function generateStaticParams() {
   const disciplines = await getDisciplines()
   return disciplines.map((discipline) => ({ slug: discipline.slug }))
