@@ -4,6 +4,7 @@ import Link from 'next/link'
 import ActivityGallery from '@/components/activities/ActivityGallery'
 import { getActivityEvents } from '@/sanity/content'
 import { sanityClient } from '@/sanity/client'
+import { fallbackActivities } from '@/sanity/fallbacks'
 
 export const dynamicParams = false
 
@@ -20,12 +21,18 @@ export async function generateStaticParams() {
       { cache: 'force-cache' },
     )
 
-    return (events || [])
+    const params = (events || [])
       .filter((event) => !!event.year && !!event.slug)
       .map((event) => ({ year: event.year as string, slug: event.slug as string }))
+
+    if (params.length > 0) return params
   } catch {
-    return []
+    // fall through to static fallback
   }
+
+  return fallbackActivities
+    .filter((e) => !!e.year && !!e.slug)
+    .map((e) => ({ year: e.year, slug: e.slug }))
 }
 
 export async function generateMetadata({

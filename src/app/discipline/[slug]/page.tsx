@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { getDisciplineBySlug, getDisciplineProgramBySlug, getDisciplines } from '@/sanity/content'
 import { sanityClient } from '@/sanity/client'
+import { fallbackDisciplines } from '@/sanity/fallbacks'
 
 export const dynamicParams = false
 
@@ -14,12 +15,18 @@ export async function generateStaticParams() {
       { cache: 'force-cache' },
     )
 
-    return (disciplines || [])
+    const slugs = (disciplines || [])
       .filter((discipline) => !!discipline.slug)
       .map((discipline) => ({ slug: discipline.slug as string }))
+
+    if (slugs.length > 0) return slugs
   } catch {
-    return []
+    // fall through to static fallback
   }
+
+  return fallbackDisciplines
+    .filter((d) => !!d.slug)
+    .map((d) => ({ slug: d.slug }))
 }
 
 export async function generateMetadata({

@@ -32,9 +32,10 @@ const sanityProjectId =
 const hasSanityConfig =
   !!sanityProjectId && sanityProjectId !== 'placeholder-project-id'
 
-// Set to true only for emergency rollback.
-// Keep this false to surface missing/forgotten Sanity content immediately.
-const USE_SANITY_FALLBACKS = false
+// Use fallbacks when Sanity is not configured (e.g. CI without project vars),
+// so the static export build succeeds with bundled content.
+// When Sanity IS configured, keep false to surface missing content immediately.
+const USE_SANITY_FALLBACKS = !hasSanityConfig
 
 function failMissingSanity(documentType: string): never {
   throw new Error(`Missing required Sanity content for type: ${documentType}`)
