@@ -10,7 +10,7 @@ export async function generateStaticParams() {
     const disciplines = await getDisciplines()
 
     return disciplines
-      .filter((discipline) => !!discipline.slug)
+      .filter((discipline): discipline is typeof discipline & { slug: string } => !!discipline.slug)
       .map((discipline) => ({ slug: discipline.slug }))
   } catch {
     return []

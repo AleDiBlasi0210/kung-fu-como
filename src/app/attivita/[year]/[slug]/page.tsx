@@ -16,7 +16,7 @@ export async function generateStaticParams() {
     const events = await getActivityEvents()
 
     return events
-      .filter((event) => !!event.year && !!event.slug)
+      .filter((event): event is typeof event & { year: string; slug: string } => !!event.year && !!event.slug)
       .map((event) => ({ year: event.year, slug: event.slug }))
   } catch {
     return []
