@@ -1,29 +1,15 @@
 import Link from 'next/link'
 
-const disciplines = [
-  {
-    slug: 'choy-li-fut',
-    name: 'Choy Li Fut',
-    subtitle: 'Branca Hung Sing',
-    description:
-      'Sistema tradizionale di Arti Marziali di origine Shaolin. Combina l\'agile gioco di gambe del nord con le potenti tecniche di mano del sud. Forme, armi, difesa personale.',
-    features: ['52 armi tradizionali', 'Forme a mano libera', 'Difesa personale', 'Chi Kung'],
-    image: 'https://images.unsplash.com/photo-1594381898411-846e7d193883?auto=format&fit=crop&w=800&q=80',
-    accent: 'from-black/90 via-black/50 to-transparent',
-  },
-  {
-    slug: 'tai-chi-chuan',
-    name: 'Tai Chi Chuan',
-    subtitle: 'Stile Yang',
-    description:
-      'Antica arte marziale cinese basata su movimenti lenti, fluidi e sincronizzati. Ideale per la salute, la gestione dello stress e il benessere a qualsiasi età.',
-    features: ['Adatto a tutte le età', 'Benefici per la salute', 'Tui Shou', 'Meditazione e Chi Kung'],
-    image: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=800&q=80',
-    accent: 'from-black/90 via-black/50 to-transparent',
-  },
-]
+type DisciplineCard = {
+  slug: string
+  name: string
+  subtitle: string
+  description: string
+  features: string[]
+  image: string
+}
 
-export default function DisciplineSection() {
+export default function DisciplineSection({ disciplines }: { disciplines: DisciplineCard[] }) {
   return (
     <section className="bg-[#0A0A0A] py-20 lg:py-28">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

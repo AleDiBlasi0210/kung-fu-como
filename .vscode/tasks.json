@@ -17,6 +17,17 @@
 			"problemMatcher": []
 		},
 		{
+			"label": "studio:dev",
+			"type": "shell",
+			"command": "npm.cmd",
+			"args": [
+				"run",
+				"studio:dev"
+			],
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
 			"label": "build",
 			"type": "shell",
 			"command": "npm.cmd",

@@ -1,9 +1,9 @@
 import type { Metadata } from 'next'
-import { newsData } from '@/data/news'
+import { getNews, getSiteCopy } from '@/sanity/content'
 
 export const metadata: Metadata = {
   title: 'News',
-  description: 'Ultime novità, eventi e aggiornamenti della scuola La Fenice Bianca ASD.',
+  description: 'Ultime novita, eventi e aggiornamenti della scuola La Fenice Bianca ASD.',
 }
 
 function formatDate(date: string) {
@@ -14,37 +14,29 @@ function formatDate(date: string) {
   }).format(new Date(date))
 }
 
-export default function NewsPage() {
-  const sorted = [...newsData].sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
-  )
+export default async function NewsPage() {
+  const [news, siteCopy] = await Promise.all([getNews(), getSiteCopy()])
+  const sorted = [...news].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
   return (
     <>
-      {/* Header */}
       <section className="pt-28 pb-16 bg-[#0A0A0A] text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="inline-block text-red font-inter font-semibold text-xs tracking-widest uppercase mb-4">
-            Novità e aggiornamenti
+            {siteCopy.newsBadge}
           </span>
-          <h1 className="font-cinzel text-4xl sm:text-5xl lg:text-6xl font-bold tracking-wide mb-4">
-            News
-          </h1>
+          <h1 className="font-cinzel text-4xl sm:text-5xl lg:text-6xl font-bold tracking-wide mb-4">News</h1>
           <p className="text-white/70 text-lg font-inter max-w-2xl mx-auto">
-            Segui attività, comunicazioni importanti e appuntamenti della scuola.
+            {siteCopy.newsLead}
           </p>
         </div>
       </section>
 
-      {/* News cards */}
       <section className="bg-white py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {sorted.map((item) => (
-              <article
-                key={item.slug}
-                className="border border-gray-light rounded-sm overflow-hidden card-hover"
-              >
+              <article key={item.slug} className="border border-gray-light rounded-sm overflow-hidden card-hover">
                 <div className="relative h-56 overflow-hidden">
                   <div
                     className="absolute inset-0 bg-cover bg-center"
@@ -56,9 +48,7 @@ export default function NewsPage() {
                   </span>
                 </div>
                 <div className="p-5">
-                  <p className="text-xs uppercase tracking-widest text-gray-mid font-inter mb-2">
-                    {formatDate(item.date)}
-                  </p>
+                  <p className="text-xs uppercase tracking-widest text-gray-mid font-inter mb-2">{formatDate(item.date)}</p>
                   <h2 className="font-cinzel text-black text-2xl leading-snug mb-3">{item.title}</h2>
                   <p className="text-gray-mid text-sm font-inter leading-relaxed">{item.excerpt}</p>
                 </div>
@@ -68,12 +58,9 @@ export default function NewsPage() {
         </div>
       </section>
 
-      {/* Facebook Feed */}
       <section className="bg-gray-light py-16 lg:py-20">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-cinzel text-3xl sm:text-4xl font-bold text-black mb-4">
-            Ultimi Post Facebook
-          </h2>
+          <h2 className="font-cinzel text-3xl sm:text-4xl font-bold text-black mb-4">Ultimi Post Facebook</h2>
           <p className="text-gray-mid font-inter mb-8 max-w-2xl mx-auto">
             Segui la pagina ufficiale per restare aggiornato su eventi, foto e comunicazioni della scuola.
           </p>

@@ -9,6 +9,13 @@
       "cwd": "${workspaceFolder}"
     },
     {
+      "name": "Sanity Studio: Dev",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm.cmd run studio:dev",
+      "cwd": "${workspaceFolder}"
+    },
+    {
       "name": "Next.js: Debug Server",
       "type": "node",
       "request": "launch",
@@ -42,7 +49,7 @@
   "compounds": [
     {
       "name": "Next.js: Full Stack Debug",
-      "configurations": ["Next.js: Debug Server"]
+      "configurations": ["Next.js: Debug Server", "Sanity Studio: Dev"]
     }
   ]
 }

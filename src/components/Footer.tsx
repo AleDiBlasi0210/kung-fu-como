@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { getSiteCopy } from '@/sanity/content'
 
 const footerLinks = {
   discipline: [
@@ -40,7 +41,8 @@ const socials = [
   },
 ]
 
-export default function Footer() {
+export default async function Footer() {
+  const siteCopy = await getSiteCopy()
   const year = new Date().getFullYear()
 
   return (
@@ -66,12 +68,12 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <div className="mb-4">
               <p className="font-cinzel font-bold text-white text-lg tracking-wider">
-                La Fenice Bianca
+                {siteCopy.footerBrandTitle}
               </p>
-              <p className="text-xs text-red tracking-widest uppercase mt-0.5">Associazione Sportiva Dilettantistica</p>
+              <p className="text-xs text-red tracking-widest uppercase mt-0.5">{siteCopy.footerOrgLine}</p>
             </div>
             <p className="text-sm leading-relaxed mb-5">
-              Scuola di arti marziali cinesi tradizionali a Como. Choy Li Fut e Tai Chi Chuan stile Yang, nell&apos;ambito della Hung Sing Kung Fu Schools of Italy.
+              {siteCopy.footerDescription}
             </p>
             <div className="flex items-center gap-3">
               {socials.map((s) => (

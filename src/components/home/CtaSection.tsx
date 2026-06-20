@@ -1,15 +1,17 @@
 import Link from 'next/link'
+import { getSiteCopy } from '@/sanity/content'
 
-export default function CtaSection() {
+export default async function CtaSection() {
+  const siteCopy = await getSiteCopy()
+
   return (
     <section className="bg-red py-16 lg:py-20">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 className="font-cinzel text-white text-3xl sm:text-4xl lg:text-5xl font-bold tracking-wide mb-4">
-          Inizia il tuo percorso
+          {siteCopy.homeCtaTitle}
         </h2>
         <p className="text-white/80 text-lg font-inter leading-relaxed mb-8 max-w-xl mx-auto">
-          La prima lezione è completamente gratuita. Vieni a provare senza impegno e scopri
-          la via delle arti marziali tradizionali cinesi.
+          {siteCopy.homeCtaText}
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <a

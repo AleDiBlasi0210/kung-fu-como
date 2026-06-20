@@ -1,75 +1,49 @@
 import type { Metadata } from 'next'
 import ContactForm from '@/components/contact/ContactForm'
-
-const contactRefs = [
-  {
-    role: 'Direttore tecnico',
-    name: 'Sifu Cristiano',
-    sedi: 'Contatto per la palestre di Albate',
-    phone: '338 846 6400',
-    phoneHref: 'tel:+393388466400',
-    email: 'info@kungfucomo.org (placeholder)',
-    emailHref: 'mailto:info@kungfucomo.org',
-  },
-  {
-    role: 'Referente corsi',
-    name: 'Sifu Corinna Corti',
-    sedi: 'Contatto per la palestra di Ponte Lambro',
-    phone: '393 293 857848',
-    phoneHref: 'tel:+393293857848',
-    email: 'corinna.corti@kungfucomo.org (placeholder)',
-    emailHref: 'mailto:corinna.corti@kungfucomo.org',
-  },
-]
+import { getContactCards, getSiteCopy } from '@/sanity/content'
 
 export const metadata: Metadata = {
   title: 'Contatti',
   description: 'Contatta La Fenice Bianca ASD per informazioni, prova gratuita e iscrizione ai corsi.',
 }
 
-export default function ContattiPage() {
+export default async function ContattiPage() {
+  const [contactRefs, siteCopy] = await Promise.all([getContactCards(), getSiteCopy()])
+
   return (
     <>
-      {/* Hero */}
       <section className="pt-28 pb-16 bg-[#0A0A0A] text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <span className="inline-block text-red font-inter font-semibold text-xs tracking-widest uppercase mb-4">
-            Siamo a disposizione
+            {siteCopy.contattiBadge}
           </span>
-          <h1 className="font-cinzel text-4xl sm:text-5xl lg:text-6xl font-bold tracking-wide mb-4">
-            Contatti
-          </h1>
+          <h1 className="font-cinzel text-4xl sm:text-5xl lg:text-6xl font-bold tracking-wide mb-4">Contatti</h1>
           <p className="text-white/70 text-lg font-inter max-w-2xl mx-auto">
-            Scrivici per informazioni sui corsi, prova gratuita o iscrizione.
+            {siteCopy.contattiLead}
           </p>
         </div>
       </section>
 
-      {/* Content */}
       <section className="bg-white py-16 lg:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Form */}
           <div className="border border-gray-light rounded-sm p-5 sm:p-6 lg:p-8 mb-8 lg:mb-10">
-            <h2 className="font-cinzel text-3xl text-black font-semibold mb-2">
-              Richiedi Informazioni
-            </h2>
-            <p className="text-gray-mid font-inter mb-7">
-              Compila il form e ti ricontatteremo il prima possibile.
-            </p>
+            <h2 className="font-cinzel text-3xl text-black font-semibold mb-2">Richiedi Informazioni</h2>
+            <p className="text-gray-mid font-inter mb-7">Compila il form e ti ricontatteremo il prima possibile.</p>
             <ContactForm />
           </div>
 
-          {/* Referenti */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
             {contactRefs.map((ref) => (
               <div key={ref.name} className="border border-gray-light rounded-sm overflow-hidden">
-                <div className="h-44 bg-gray-light flex items-center justify-center">
-                  <span className="text-gray-mid text-sm font-inter">Foto {ref.name} (placeholder)</span>
+                <div className="h-44 bg-gray-light flex items-center justify-center overflow-hidden">
+                  {ref.image ? (
+                    <img src={ref.image} alt={ref.name} className="w-full h-full object-cover" loading="lazy" />
+                  ) : (
+                    <span className="text-gray-mid text-sm font-inter">Foto {ref.name} (placeholder)</span>
+                  )}
                 </div>
                 <div className="p-5">
-                  <p className="text-xs uppercase tracking-widest text-red font-inter font-semibold mb-2">
-                    {ref.role}
-                  </p>
+                  <p className="text-xs uppercase tracking-widest text-red font-inter font-semibold mb-2">{ref.role}</p>
                   <h2 className="font-cinzel text-2xl text-black font-semibold mb-2">{ref.name}</h2>
                   <p className="text-gray-mid text-sm font-inter leading-relaxed mb-4">{ref.sedi}</p>
 

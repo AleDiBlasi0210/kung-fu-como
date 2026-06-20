@@ -2,45 +2,12 @@
 
 import { useState } from 'react'
 
-const faqs = [
-  {
-    question: 'È necessaria un\'esperienza precedente nelle arti marziali?',
-    answer:
-      'No, assolutamente. Le nostre classi accolgono principianti assoluti. Gli insegnanti strutturano le lezioni in modo che ogni praticante, qualunque sia il suo livello, possa partecipare e progredire al proprio ritmo.',
-  },
-  {
-    question: 'Posso provare una lezione prima di iscrivermi?',
-    answer:
-      'Certo! La prima lezione è completamente gratuita e senza impegno. Contattaci per telefono o tramite il form per prenotare la tua prova.',
-  },
-  {
-    question: 'Da che età si può iniziare?',
-    answer:
-      'Accettiamo praticanti a partire dai 7-8 anni. Il Tai Chi Chuan è adatto a qualsiasi età, anche in età avanzata. Non ci sono controindicazioni particolari, ma è sempre bene informarci di eventuali problemi fisici.',
-  },
-  {
-    question: 'Qual è la differenza tra Choy Li Fut e Tai Chi Chuan?',
-    answer:
-      'Il Choy Li Fut è uno stile energico, con movimenti potenti e circolari, forme a mano libera e con le armi, sparring. Il Tai Chi Chuan è uno stile interno, con movimenti lenti e fluidi, particolarmente benefico per la salute, la flessibilità e la gestione dello stress.',
-  },
-  {
-    question: 'Quante volte alla settimana si pratica?',
-    answer:
-      'Le classi si tengono di norma 2 volte a settimana per sede. Puoi scegliere la frequenza più adatta a te, anche una volta a settimana per cominciare.',
-  },
-  {
-    question: 'Cosa devo portare alla prima lezione?',
-    answer:
-      'Abbigliamento comodo da ginnastica e scarpe da ginnastica leggere. Non è necessario un equipaggiamento specifico per iniziare: ki (divisa) e attrezzatura si acquistano in seguito.',
-  },
-  {
-    question: 'La scuola fa parte di una federazione riconosciuta?',
-    answer:
-      'Sì. La Fenice Bianca ASD è affiliata a USAcli (riconosciuta dal CONI) e fa parte della Hung Sing Kung Fu Schools of Italy, sotto la guida del Grandmaster Doc Fai Wong.',
-  },
-]
+type Faq = {
+  question: string
+  answer: string
+}
 
-export default function FaqSection() {
+export default function FaqSection({ faqs }: { faqs: Faq[] }) {
   const [open, setOpen] = useState<number | null>(null)
 
   return (

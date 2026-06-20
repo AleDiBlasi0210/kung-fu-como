@@ -38,7 +38,6 @@ export default function Popup() {
       {/* Card */}
       <div className="relative bg-[#0A0A0A] border border-red/60 rounded-sm max-w-md w-full shadow-2xl animate-fade-in-up">
         {/* Red top stripe */}
-        <div className="bg-red h-1 rounded-t-sm" />
 
         <div className="p-7">
           {/* Close */}
