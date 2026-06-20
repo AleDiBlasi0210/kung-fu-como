@@ -12,11 +12,15 @@ async function findEvent(year: string, slug: string) {
 }
 
 export async function generateStaticParams() {
-  const events = await getActivityEvents()
+  try {
+    const events = await getActivityEvents()
 
-  return events
-    .filter((event) => !!event.year && !!event.slug)
-    .map((event) => ({ year: event.year, slug: event.slug }))
+    return events
+      .filter((event) => !!event.year && !!event.slug)
+      .map((event) => ({ year: event.year, slug: event.slug }))
+  } catch {
+    return []
+  }
 }
 
 export async function generateMetadata({

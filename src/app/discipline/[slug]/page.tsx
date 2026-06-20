@@ -6,11 +6,15 @@ import { getDisciplineBySlug, getDisciplineProgramBySlug, getDisciplines } from 
 export const dynamicParams = false
 
 export async function generateStaticParams() {
-  const disciplines = await getDisciplines()
+  try {
+    const disciplines = await getDisciplines()
 
-  return disciplines
-    .filter((discipline) => !!discipline.slug)
-    .map((discipline) => ({ slug: discipline.slug }))
+    return disciplines
+      .filter((discipline) => !!discipline.slug)
+      .map((discipline) => ({ slug: discipline.slug }))
+  } catch {
+    return []
+  }
 }
 
 export async function generateMetadata({
