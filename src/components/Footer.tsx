@@ -44,6 +44,7 @@ const socials = [
 export default async function Footer() {
   const siteCopy = await getSiteCopy()
   const year = new Date().getFullYear()
+  const studioUrl = process.env.NEXT_PUBLIC_SANITY_STUDIO_URL
 
   return (
     <footer className="bg-[#0A0A0A] text-white/70 border-t border-white/10">
@@ -154,7 +155,20 @@ export default async function Footer() {
         {/* Bottom bar */}
         <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/40">
           <p>© {year} La Fenice Bianca ASD · Tutti i diritti riservati</p>
-          <div className="flex items-center gap-1 text-white/30">
+          <div className="flex flex-wrap items-center justify-center gap-1 text-white/30">
+            {studioUrl && (
+              <>
+                <a
+                  href={studioUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors"
+                >
+                  Area Admin
+                </a>
+                <span className="text-white/50 mx-1">·</span>
+              </>
+            )}
             <span>Affiliata</span>
             <span className="text-white/50 mx-1">·</span>
             <span>USAcli</span>

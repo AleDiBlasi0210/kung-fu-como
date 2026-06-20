@@ -32,6 +32,14 @@ const sanityProjectId =
 const hasSanityConfig =
   !!sanityProjectId && sanityProjectId !== 'placeholder-project-id'
 
+// Set to true only for emergency rollback.
+// Keep this false to surface missing/forgotten Sanity content immediately.
+const USE_SANITY_FALLBACKS = false
+
+function failMissingSanity(documentType: string): never {
+  throw new Error(`Missing required Sanity content for type: ${documentType}`)
+}
+
 async function safeFetch<T>(query: string, params?: Record<string, unknown>): Promise<T | null> {
   if (!hasSanityConfig) return null
 
@@ -59,12 +67,16 @@ export async function getHomeSettings(): Promise<HomeSettings> {
     }
   `)
 
-  return data || fallbackHomeSettings
+  if (data) return data
+  if (USE_SANITY_FALLBACKS) return fallbackHomeSettings
+  return failMissingSanity('homeSettings')
 }
 
 export async function getFaqs(): Promise<FaqItem[]> {
   const data = await safeFetch<FaqItem[]>(`*[_type == "faq"] | order(order asc){question, answer, order}`)
-  return data && data.length > 0 ? data : fallbackFaqs
+  if (data && data.length > 0) return data
+  if (USE_SANITY_FALLBACKS) return fallbackFaqs
+  return failMissingSanity('faq')
 }
 
 export async function getDisciplines(): Promise<Discipline[]> {
@@ -84,7 +96,9 @@ export async function getDisciplines(): Promise<Discipline[]> {
     }
   `)
 
-  return data && data.length > 0 ? data : fallbackDisciplines
+  if (data && data.length > 0) return data
+  if (USE_SANITY_FALLBACKS) return fallbackDisciplines
+  return failMissingSanity('discipline')
 }
 
 export async function getDisciplineBySlug(slug: string): Promise<Discipline | null> {
@@ -105,7 +119,8 @@ export async function getDisciplineBySlug(slug: string): Promise<Discipline | nu
   `, { slug })
 
   if (data) return data
-  return fallbackDisciplines.find((d) => d.slug === slug) || null
+  if (USE_SANITY_FALLBACKS) return fallbackDisciplines.find((d) => d.slug === slug) || null
+  return null
 }
 
 export async function getLocations(): Promise<Location[]> {
@@ -140,7 +155,9 @@ export async function getLocations(): Promise<Location[]> {
     }
   `)
 
-  return legacyData && legacyData.length > 0 ? legacyData : fallbackLocations
+  if (legacyData && legacyData.length > 0) return legacyData
+  if (USE_SANITY_FALLBACKS) return fallbackLocations
+  return failMissingSanity('location')
 }
 
 export async function getNews(): Promise<NewsItem[]> {
@@ -155,7 +172,9 @@ export async function getNews(): Promise<NewsItem[]> {
     }
   `)
 
-  return data && data.length > 0 ? data : fallbackNews
+  if (data && data.length > 0) return data
+  if (USE_SANITY_FALLBACKS) return fallbackNews
+  return failMissingSanity('news')
 }
 
 export async function getActivityEvents(): Promise<ActivityEvent[]> {
@@ -173,7 +192,9 @@ export async function getActivityEvents(): Promise<ActivityEvent[]> {
     }
   `)
 
-  return data && data.length > 0 ? data : fallbackActivities
+  if (data && data.length > 0) return data
+  if (USE_SANITY_FALLBACKS) return fallbackActivities
+  return failMissingSanity('event')
 }
 
 export async function getPartners(): Promise<PartnerItem[]> {
@@ -187,7 +208,9 @@ export async function getPartners(): Promise<PartnerItem[]> {
     }
   `)
 
-  return data && data.length > 0 ? data : fallbackPartners
+  if (data && data.length > 0) return data
+  if (USE_SANITY_FALLBACKS) return fallbackPartners
+  return failMissingSanity('partner')
 }
 
 export async function getInstructors(): Promise<InstructorItem[]> {
@@ -201,7 +224,9 @@ export async function getInstructors(): Promise<InstructorItem[]> {
     }
   `)
 
-  return data && data.length > 0 ? data : fallbackInstructors
+  if (data && data.length > 0) return data
+  if (USE_SANITY_FALLBACKS) return fallbackInstructors
+  return failMissingSanity('instructor')
 }
 
 export async function getContactCards(): Promise<ContactCard[]> {
@@ -219,7 +244,9 @@ export async function getContactCards(): Promise<ContactCard[]> {
     }
   `)
 
-  return data && data.length > 0 ? data : fallbackContactCards
+  if (data && data.length > 0) return data
+  if (USE_SANITY_FALLBACKS) return fallbackContactCards
+  return failMissingSanity('contactCard')
 }
 
 export async function getSiteCopy(): Promise<SiteCopy> {
@@ -245,7 +272,37 @@ export async function getSiteCopy(): Promise<SiteCopy> {
     }
   `)
 
-  if (!data) return fallbackSiteCopy
+  if (!data) {
+    if (USE_SANITY_FALLBACKS) return fallbackSiteCopy
+    return failMissingSanity('siteCopy')
+  }
+
+  const isComplete =
+    !!data.footerBrandTitle &&
+    !!data.footerOrgLine &&
+    !!data.footerDescription &&
+    !!data.homeCtaTitle &&
+    !!data.homeCtaText &&
+    !!data.sediBadge &&
+    !!data.sediLead &&
+    !!data.attivitaBadge &&
+    !!data.attivitaLead &&
+    !!data.istruttoriBadge &&
+    !!data.istruttoriLead &&
+    !!data.newsBadge &&
+    !!data.newsLead &&
+    !!data.contattiBadge &&
+    !!data.contattiLead &&
+    !!data.partnerBadge &&
+    !!data.partnerLead
+
+  if (!isComplete && !USE_SANITY_FALLBACKS) {
+    return failMissingSanity('siteCopy (one or more fields are empty)')
+  }
+
+  if (!isComplete && USE_SANITY_FALLBACKS) {
+    return fallbackSiteCopy
+  }
 
   return {
     footerBrandTitle: data.footerBrandTitle || fallbackSiteCopy.footerBrandTitle,
@@ -290,5 +347,9 @@ export async function getDisciplineProgramBySlug(slug: string): Promise<Discipli
 
   if (data && data.levels && data.levels.length > 0) return data
 
-  return fallbackDisciplinePrograms.find((program) => program.disciplineSlug === slug) || null
+  if (USE_SANITY_FALLBACKS) {
+    return fallbackDisciplinePrograms.find((program) => program.disciplineSlug === slug) || null
+  }
+
+  return failMissingSanity(`disciplineProgram (${slug})`)
 }
