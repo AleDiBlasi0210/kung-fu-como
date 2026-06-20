@@ -32,6 +32,9 @@ const sanityProjectId =
 const hasSanityConfig =
   !!sanityProjectId && sanityProjectId !== 'placeholder-project-id'
 
+const sanityFetchCacheMode: 'no-store' | 'force-cache' =
+  process.env.NODE_ENV === 'development' ? 'no-store' : 'force-cache'
+
 const sanityStrictMode =
   process.env.SANITY_STRICT_MODE === 'true' ||
   process.env.NEXT_PUBLIC_SANITY_STRICT_MODE === 'true'
@@ -50,10 +53,10 @@ async function safeFetch<T>(query: string, params?: Record<string, unknown>): Pr
   try {
     if (params) {
       return await sanityClient.fetch<T>(query, params as Record<string, string | number | boolean>, {
-        cache: 'no-store',
+        cache: sanityFetchCacheMode,
       })
     }
-    return await sanityClient.fetch<T>(query, {}, { cache: 'no-store' })
+    return await sanityClient.fetch<T>(query, {}, { cache: sanityFetchCacheMode })
   } catch (error) {
     console.error('Sanity fetch failed:', error)
     return null
