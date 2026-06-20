@@ -32,9 +32,13 @@ const sanityProjectId =
 const hasSanityConfig =
   !!sanityProjectId && sanityProjectId !== 'placeholder-project-id'
 
-// Set to true only for emergency rollback.
-// Keep this false to surface missing/forgotten Sanity content immediately.
-const USE_SANITY_FALLBACKS = false
+const sanityStrictMode =
+  process.env.SANITY_STRICT_MODE === 'true' ||
+  process.env.NEXT_PUBLIC_SANITY_STRICT_MODE === 'true'
+
+// In strict mode, missing Sanity content throws explicit errors.
+// Default behavior keeps fallbacks enabled to avoid production/CI build breaks.
+const USE_SANITY_FALLBACKS = !sanityStrictMode
 
 function failMissingSanity(documentType: string): never {
   throw new Error(`Missing required Sanity content for type: ${documentType}`)
