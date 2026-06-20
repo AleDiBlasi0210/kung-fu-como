@@ -26,11 +26,13 @@ export async function generateStaticParams() {
       .map((event) => ({ year: event.year as string, slug: event.slug as string }))
 
     if (params.length > 0) return params
-
-    return fallbackActivities.map((event) => ({ year: event.year, slug: event.slug }))
   } catch {
-    return fallbackActivities.map((event) => ({ year: event.year, slug: event.slug }))
+    // fall through to static fallback
   }
+
+  return fallbackActivities
+    .filter((e) => !!e.year && !!e.slug)
+    .map((e) => ({ year: e.year, slug: e.slug }))
 }
 
 export async function generateMetadata({

@@ -15,16 +15,18 @@ export async function generateStaticParams() {
       { cache: 'force-cache' },
     )
 
-    const params = (disciplines || [])
+    const slugs = (disciplines || [])
       .filter((discipline) => !!discipline.slug)
       .map((discipline) => ({ slug: discipline.slug as string }))
 
-    if (params.length > 0) return params
-
-    return fallbackDisciplines.map((discipline) => ({ slug: discipline.slug }))
+    if (slugs.length > 0) return slugs
   } catch {
-    return fallbackDisciplines.map((discipline) => ({ slug: discipline.slug }))
+    // fall through to static fallback
   }
+
+  return fallbackDisciplines
+    .filter((d) => !!d.slug)
+    .map((d) => ({ slug: d.slug }))
 }
 
 export async function generateMetadata({
