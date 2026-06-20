@@ -194,7 +194,9 @@ export async function getActivityEvents(): Promise<ActivityEvent[]> {
 
   if (data && data.length > 0) return data
   if (USE_SANITY_FALLBACKS) return fallbackActivities
-  return failMissingSanity('event')
+
+  // Events are optional content: return an empty list when nothing is published.
+  return []
 }
 
 export async function getPartners(): Promise<PartnerItem[]> {
