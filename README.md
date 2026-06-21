@@ -56,6 +56,26 @@ npm.cmd run studio:deploy
 When prompted, choose a Studio hostname (for example `kungfucomo-admin`).
 This creates a separate secure admin URL from the public GitHub Pages site.
 
+## 7) On-demand revalidation (Vercel)
+
+This project includes an API route at `POST /api/revalidate` to refresh cached
+pages/tags after Sanity publish.
+
+Add environment variable on Vercel:
+
+- `REVALIDATE_SECRET` (long random string)
+
+Create a Sanity webhook:
+
+1. Sanity Manage -> API -> Webhooks -> Create webhook
+2. URL: `https://<your-domain>/api/revalidate?secret=<REVALIDATE_SECRET>`
+3. Method: `POST`
+4. Trigger on: publish (optionally unpublish/delete)
+5. Include document payload (default) so `_type` is available
+
+After each publish, the webhook triggers selective revalidation for relevant
+pages (news, attivita, faq, instructors, etc.) without full redeploy.
+
 ## Content managed via Sanity
 
 - Home mission + affiliations

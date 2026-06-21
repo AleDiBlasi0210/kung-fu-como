@@ -44,16 +44,25 @@ function failMissingSanity(documentType: string): never {
   throw new Error(`Missing required Sanity content for type: ${documentType}`)
 }
 
-async function safeFetch<T>(query: string, params?: Record<string, unknown>): Promise<T | null> {
+async function safeFetch<T>(
+  query: string,
+  params?: Record<string, unknown>,
+  options?: { tags?: string[] },
+): Promise<T | null> {
   if (!hasSanityConfig) return null
+
+  const fetchOptions = {
+    cache: sanityFetchCacheMode,
+    ...(options?.tags ? { next: { tags: options.tags } } : {}),
+  }
 
   try {
     if (params) {
       return await sanityClient.fetch<T>(query, params as Record<string, string | number | boolean>, {
-        cache: sanityFetchCacheMode,
+        ...fetchOptions,
       })
     }
-    return await sanityClient.fetch<T>(query, {}, { cache: sanityFetchCacheMode })
+    return await sanityClient.fetch<T>(query, {}, { ...fetchOptions })
   } catch (error) {
     console.error('Sanity fetch failed:', error)
     return null
@@ -69,7 +78,7 @@ export async function getHomeSettings(): Promise<HomeSettings> {
       "missionText2": coalesce(missionText2, ""),
       "affiliations": coalesce(affiliations, [])
     }
-  `)
+  `, undefined, { tags: ['homeSettings'] })
 
   if (data) return data
   if (USE_SANITY_FALLBACKS) return fallbackHomeSettings
@@ -77,7 +86,11 @@ export async function getHomeSettings(): Promise<HomeSettings> {
 }
 
 export async function getFaqs(): Promise<FaqItem[]> {
-  const data = await safeFetch<FaqItem[]>(`*[_type == "faq"] | order(order asc){question, answer, order}`)
+  const data = await safeFetch<FaqItem[]>(
+    `*[_type == "faq"] | order(order asc){question, answer, order}`,
+    undefined,
+    { tags: ['faq'] },
+  )
   if (data && data.length > 0) return data
   if (USE_SANITY_FALLBACKS) return fallbackFaqs
   return failMissingSanity('faq')
@@ -98,7 +111,7 @@ export async function getDisciplines(): Promise<Discipline[]> {
       "ctaText": coalesce(ctaText, "Inizia ora"),
       order
     }
-  `)
+  `, undefined, { tags: ['discipline'] })
 
   if (data && data.length > 0) return data
   if (USE_SANITY_FALLBACKS) return fallbackDisciplines
@@ -120,7 +133,7 @@ export async function getDisciplineBySlug(slug: string): Promise<Discipline | nu
       "ctaText": coalesce(ctaText, "Inizia ora"),
       order
     }
-  `, { slug })
+  `, { slug }, { tags: ['discipline'] })
 
   if (data) return data
   if (USE_SANITY_FALLBACKS) return fallbackDisciplines.find((d) => d.slug === slug) || null
@@ -139,7 +152,7 @@ export async function getLocations(): Promise<Location[]> {
       "schedule": coalesce(schedule, []),
       order
     }
-  `)
+  `, undefined, { tags: ['location'] })
 
   if (data && data.length > 0) return data
 
@@ -157,7 +170,7 @@ export async function getLocations(): Promise<Location[]> {
       },
       "order": 999
     }
-  `)
+  `, undefined, { tags: ['location'] })
 
   if (legacyData && legacyData.length > 0) return legacyData
   if (USE_SANITY_FALLBACKS) return fallbackLocations
@@ -174,7 +187,7 @@ export async function getNews(): Promise<NewsItem[]> {
       "image": image.asset->url,
       category
     }
-  `)
+  `, undefined, { tags: ['news'] })
 
   if (data && data.length > 0) return data
   if (USE_SANITY_FALLBACKS) return fallbackNews
@@ -194,7 +207,7 @@ export async function getActivityEvents(): Promise<ActivityEvent[]> {
         title
       }
     }
-  `)
+  `, undefined, { tags: ['event'] })
 
   if (data && data.length > 0) return data
   if (USE_SANITY_FALLBACKS) return fallbackActivities
@@ -212,7 +225,7 @@ export async function getPartners(): Promise<PartnerItem[]> {
       description,
       order
     }
-  `)
+  `, undefined, { tags: ['partner'] })
 
   if (data && data.length > 0) return data
   if (USE_SANITY_FALLBACKS) return fallbackPartners
@@ -228,7 +241,7 @@ export async function getInstructors(): Promise<InstructorItem[]> {
       "image": image.asset->url,
       order
     }
-  `)
+  `, undefined, { tags: ['instructor'] })
 
   if (data && data.length > 0) return data
   if (USE_SANITY_FALLBACKS) return fallbackInstructors
@@ -248,7 +261,7 @@ export async function getContactCards(): Promise<ContactCard[]> {
       "image": image.asset->url,
       order
     }
-  `)
+  `, undefined, { tags: ['contactCard'] })
 
   if (data && data.length > 0) return data
   if (USE_SANITY_FALLBACKS) return fallbackContactCards
@@ -276,7 +289,7 @@ export async function getSiteCopy(): Promise<SiteCopy> {
       "partnerBadge": coalesce(partnerBadge, ""),
       "partnerLead": coalesce(partnerLead, "")
     }
-  `)
+  `, undefined, { tags: ['siteCopy'] })
 
   if (!data) {
     if (USE_SANITY_FALLBACKS) return fallbackSiteCopy
@@ -349,7 +362,7 @@ export async function getDisciplineProgramBySlug(slug: string): Promise<Discipli
         "notes": coalesce(notes, [])
       }
     }
-  `, { slug })
+  `, { slug }, { tags: ['disciplineProgram'] })
 
   if (data && data.levels && data.levels.length > 0) return data
 
