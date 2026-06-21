@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { sanityClient } from '@/sanity/client'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 type ContactSettings = {
   recipientEmails: { email: string; label?: string }[]
   fromName: string
@@ -17,6 +15,14 @@ const SEDE_LABELS: Record<string, string> = {
 }
 
 export async function POST(request: NextRequest) {
+  const apiKey = process.env.RESEND_API_KEY
+  if (!apiKey) {
+    console.error('RESEND_API_KEY non configurata')
+    return NextResponse.json({ ok: false, message: 'Configurazione server mancante' }, { status: 500 })
+  }
+
+  const resend = new Resend(apiKey)
+
   try {
     const body = await request.json()
     const { name, email, phone, sede, subject, message } = body as Record<string, string>
