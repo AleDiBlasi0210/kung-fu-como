@@ -13,14 +13,17 @@ export default function ContactForm() {
     setStatus('sending')
 
     try {
-      // TODO: sostituisci con il tuo endpoint Formspree quando disponibile
-      const endpoint = 'https://formspree.io/f/PLACEHOLDER_ID'
-      const response = await fetch(endpoint, {
+      const response = await fetch('/api/contact', {
         method: 'POST',
-        body: data,
-        headers: {
-          Accept: 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: data.get('name'),
+          email: data.get('email'),
+          phone: data.get('phone'),
+          sede: data.get('sede'),
+          subject: data.get('subject'),
+          message: data.get('message'),
+        }),
       })
 
       if (response.ok) {
