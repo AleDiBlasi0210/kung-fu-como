@@ -47,7 +47,7 @@ export default function DisciplineSection({ disciplines }: { disciplines: Discip
                 <h3 className="font-cinzel text-white text-2xl lg:text-3xl font-bold mb-3">
                   {disc.name}
                 </h3>
-                <p className="hidden sm:block text-white/70 text-sm font-inter leading-relaxed mb-4 max-w-sm">
+                <p className="sm:block text-white/70 text-sm font-inter leading-relaxed mb-4 max-w-sm">
                   {disc.description}
                 </p>
 
