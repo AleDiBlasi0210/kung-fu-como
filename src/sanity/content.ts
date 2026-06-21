@@ -248,22 +248,38 @@ export async function getInstructors(): Promise<InstructorItem[]> {
   return failMissingSanity('instructor')
 }
 
+function toPhoneHref(phone: string | undefined): string {
+  if (!phone) return ''
+  const digits = phone.replace(/\D/g, '')
+  if (digits.startsWith('00')) return `tel:+${digits.slice(2)}`
+  if (phone.trimStart().startsWith('+')) return `tel:+${digits}`
+  return `tel:+39${digits}`
+}
+
+function toEmailHref(email: string | undefined): string {
+  return email ? `mailto:${email.trim()}` : ''
+}
+
 export async function getContactCards(): Promise<ContactCard[]> {
-  const data = await safeFetch<ContactCard[]>(`
+  const raw = await safeFetch<Omit<ContactCard, 'phoneHref' | 'emailHref'>[]>(`
     *[_type == "contactCard"] | order(order asc){
       role,
       name,
       sedi,
       phone,
-      phoneHref,
       email,
-      emailHref,
       "image": image.asset->url,
       order
     }
   `, undefined, { tags: ['contactCard'] })
 
-  if (data && data.length > 0) return data
+  if (raw && raw.length > 0) {
+    return raw.map((card) => ({
+      ...card,
+      phoneHref: toPhoneHref(card.phone),
+      emailHref: toEmailHref(card.email),
+    }))
+  }
   if (USE_SANITY_FALLBACKS) return fallbackContactCards
   return failMissingSanity('contactCard')
 }
