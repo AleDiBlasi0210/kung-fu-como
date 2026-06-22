@@ -6,8 +6,6 @@ import { getActivityEvents } from '@/sanity/content'
 import { sanityClient } from '@/sanity/client'
 import { fallbackActivities } from '@/sanity/fallbacks'
 
-export const dynamicParams = false
-
 async function findEvent(year: string, slug: string) {
   const events = await getActivityEvents()
   return events.find((event) => event.year === year && event.slug === slug)
