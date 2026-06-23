@@ -81,6 +81,11 @@ export async function POST(request: NextRequest) {
       if (slug && year) revalidatePath(`/attivita/${year}/${slug}`)
       break
 
+    case 'popup':
+      revalidateTag('popup')
+      revalidatePath('/', 'layout')
+      break
+
     case 'faq':
       revalidateTag('faq')
       revalidatePath('/')

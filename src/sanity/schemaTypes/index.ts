@@ -10,9 +10,11 @@ import { partnerType } from './partnerType'
 import { siteCopyType } from './siteCopyType'
 import { disciplineProgramType } from './disciplineProgramType'
 import { contactSettingsType } from './contactSettingsType'
+import { popupType } from './popupType'
 
 export const schemaTypes = [
 	homeSettingsType,
+	popupType,
 	siteCopyType,
 	contactSettingsType,
 	disciplineType,

@@ -139,3 +139,27 @@ export type DisciplineProgram = {
   logoUrl?: string
   levels: DisciplineProgramLevel[]
 }
+
+export type PopupScheduleEntry = {
+  day: string
+  time: string
+}
+
+export type PopupScheduleRow = {
+  discipline: string
+  entries: PopupScheduleEntry[]
+}
+
+export type PopupItem = {
+  _id: string
+  type: 'sede' | 'evento' | 'testo'
+  badge?: string
+  title: string
+  titleAccent?: string
+  schedule?: PopupScheduleRow[]
+  image?: string
+  text?: string
+  ctaText?: string
+  ctaHref?: string
+  order: number
+}

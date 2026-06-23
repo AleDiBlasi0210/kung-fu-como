@@ -23,6 +23,7 @@ import type {
   Location,
   NewsItem,
   PartnerItem,
+  PopupItem,
   SiteCopy,
 } from './types'
 
@@ -358,6 +359,32 @@ export async function getSiteCopy(): Promise<SiteCopy> {
     partnerBadge: data.partnerBadge || fallbackSiteCopy.partnerBadge,
     partnerLead: data.partnerLead || fallbackSiteCopy.partnerLead,
   }
+}
+
+export async function getPopups(): Promise<PopupItem[]> {
+  const data = await safeFetch<PopupItem[]>(`
+    *[_type == "popup" && isActive == true] | order(order asc){
+      _id,
+      type,
+      badge,
+      title,
+      titleAccent,
+      "schedule": coalesce(schedule, [])[]{
+        discipline,
+        "entries": coalesce(entries, [])[]{
+          day,
+          time
+        }
+      },
+      "image": image.asset->url,
+      text,
+      ctaText,
+      ctaHref,
+      order
+    }
+  `, undefined, { tags: ['popup'] })
+
+  return data ?? []
 }
 
 export async function getDisciplineProgramBySlug(slug: string): Promise<DisciplineProgram | null> {
