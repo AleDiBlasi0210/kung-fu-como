@@ -54,11 +54,13 @@ export default function ContactForm() {
         </div>
         <div>
           <label htmlFor="phone" className="block text-sm font-inter font-medium text-black mb-1.5">
-            Telefono
+            Telefono *
           </label>
           <input
             id="phone"
             name="phone"
+            type="tel"
+            required
             className="w-full border border-gray-light rounded-sm px-4 py-3 font-inter text-sm focus:border-red focus:outline-none"
             placeholder="333 123 4567"
           />

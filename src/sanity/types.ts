@@ -4,6 +4,7 @@ export type HomeSettings = {
   missionText1: string
   missionText2: string
   affiliations: string[]
+  heroImage?: string
 }
 
 export type FaqItem = {
@@ -74,6 +75,7 @@ export type ActivityEvent = {
 export type PartnerItem = {
   name: string
   href: string
+  bannerHref?: string
   image: string
   description: string
   order?: number
@@ -82,6 +84,8 @@ export type PartnerItem = {
 export type InstructorItem = {
   name: string
   title: string
+  grade?: string
+  gradeOrder?: number
   description: string
   image: string
   order?: number

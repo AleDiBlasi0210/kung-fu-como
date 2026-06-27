@@ -1,15 +1,17 @@
 import Link from 'next/link'
 
-export default function HeroSection() {
+const FALLBACK_IMAGE =
+  'https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=1920&q=80'
+
+export default function HeroSection({ heroImage }: { heroImage?: string }) {
+  const bgImage = heroImage || FALLBACK_IMAGE
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1555597673-b21d5c935865?auto=format&fit=crop&w=1920&q=80')",
-        }}
+        style={{ backgroundImage: `url('${bgImage}')` }}
         aria-hidden="true"
       />
       {/* Dark overlay with gradient */}

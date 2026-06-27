@@ -3,6 +3,7 @@ import HeroSection from '@/components/home/HeroSection'
 import ChiSiamoSection from '@/components/home/ChiSiamoSection'
 import DisciplineSection from '@/components/home/DisciplineSection'
 import SediPreviewSection from '@/components/home/SediPreviewSection'
+import PartnersBannerSection from '@/components/home/PartnersBannerSection'
 import CtaSection from '@/components/home/CtaSection'
 import FaqSection from '@/components/home/FaqSection'
 import { getDisciplines, getFaqs, getHomeSettings } from '@/sanity/content'
@@ -31,7 +32,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <HeroSection />
+      <HeroSection heroImage={homeSettings.heroImage} />
       <ChiSiamoSection
         missionLabel={homeSettings.missionLabel}
         missionTitle={homeSettings.missionTitle}
@@ -41,6 +42,7 @@ export default async function HomePage() {
       />
       <DisciplineSection disciplines={disciplineCards} />
       <SediPreviewSection />
+      <PartnersBannerSection />
       <CtaSection />
       <FaqSection faqs={faqs} />
     </>

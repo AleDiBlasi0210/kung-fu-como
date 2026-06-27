@@ -15,5 +15,12 @@ export const homeSettingsType = defineType({
       type: 'array',
       of: [defineArrayMember({ type: 'string' })],
     }),
+    defineField({
+      name: 'heroImage',
+      title: 'Immagine hero (homepage)',
+      type: 'image',
+      options: { hotspot: true },
+      description: 'Immagine di sfondo della sezione hero nella homepage.',
+    }),
   ],
 })

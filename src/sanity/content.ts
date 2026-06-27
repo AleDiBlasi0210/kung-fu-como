@@ -77,7 +77,8 @@ export async function getHomeSettings(): Promise<HomeSettings> {
       "missionTitle": coalesce(missionTitle, "Chi Siamo"),
       "missionText1": coalesce(missionText1, ""),
       "missionText2": coalesce(missionText2, ""),
-      "affiliations": coalesce(affiliations, [])
+      "affiliations": coalesce(affiliations, []),
+      "heroImage": heroImage.asset->url
     }
   `, undefined, { tags: ['homeSettings'] })
 
@@ -222,6 +223,7 @@ export async function getPartners(): Promise<PartnerItem[]> {
     *[_type == "partner"] | order(order asc){
       name,
       href,
+      bannerHref,
       "image": image.asset->url,
       description,
       order
@@ -235,9 +237,11 @@ export async function getPartners(): Promise<PartnerItem[]> {
 
 export async function getInstructors(): Promise<InstructorItem[]> {
   const data = await safeFetch<InstructorItem[]>(`
-    *[_type == "instructor"] | order(order asc){
+    *[_type == "instructor"] | order(gradeOrder asc, order asc){
       name,
       title,
+      grade,
+      gradeOrder,
       description,
       "image": image.asset->url,
       order
