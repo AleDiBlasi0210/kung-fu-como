@@ -6,7 +6,7 @@ import SediPreviewSection from '@/components/home/SediPreviewSection'
 import PartnersBannerSection from '@/components/home/PartnersBannerSection'
 import CtaSection from '@/components/home/CtaSection'
 import FaqSection from '@/components/home/FaqSection'
-import { getDisciplines, getFaqs, getHomeSettings } from '@/sanity/content'
+import { getDisciplines, getFaqs, getHomeSettings, getLocations } from '@/sanity/content'
 
 export const metadata: Metadata = {
   title: 'La Fenice Bianca ASD | Kung Fu Como – Choy Li Fut e Tai Chi Chuan',
@@ -15,10 +15,11 @@ export const metadata: Metadata = {
 }
 
 export default async function HomePage() {
-  const [homeSettings, faqs, disciplines] = await Promise.all([
+  const [homeSettings, faqs, disciplines, sedi] = await Promise.all([
     getHomeSettings(),
     getFaqs(),
     getDisciplines(),
+    getLocations(),
   ])
 
   const disciplineCards = disciplines.map((d) => ({
@@ -41,7 +42,7 @@ export default async function HomePage() {
         affiliations={homeSettings.affiliations}
       />
       <DisciplineSection disciplines={disciplineCards} />
-      <SediPreviewSection />
+      <SediPreviewSection sedi={sedi} />
       <PartnersBannerSection />
       <CtaSection />
       <FaqSection faqs={faqs} />

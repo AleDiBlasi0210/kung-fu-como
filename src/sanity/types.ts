@@ -1,3 +1,5 @@
+import type { PortableTextBlock } from '@portabletext/react'
+
 export type HomeSettings = {
   missionLabel: string
   missionTitle: string
@@ -47,6 +49,11 @@ export type Location = {
   mapsLink: string
   schedule: LocationSchedule[]
   order?: number
+  homeBadge?: string
+  homeBadgeHighlight?: boolean
+  homeShortAddress?: string
+  homeDisciplines?: string
+  homeDays?: string
 }
 
 export type NewsItem = {
@@ -56,6 +63,7 @@ export type NewsItem = {
   excerpt: string
   image: string
   category: string
+  content?: PortableTextBlock[]
 }
 
 export type ActivityImage = {

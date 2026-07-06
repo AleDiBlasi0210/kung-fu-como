@@ -152,7 +152,12 @@ export async function getLocations(): Promise<Location[]> {
       mapsEmbed,
       mapsLink,
       "schedule": coalesce(schedule, []),
-      order
+      order,
+      homeBadge,
+      homeBadgeHighlight,
+      homeShortAddress,
+      homeDisciplines,
+      homeDays
     }
   `, undefined, { tags: ['location'] })
 
@@ -194,6 +199,24 @@ export async function getNews(): Promise<NewsItem[]> {
   if (data && data.length > 0) return data
   if (USE_SANITY_FALLBACKS) return fallbackNews
   return failMissingSanity('news')
+}
+
+export async function getNewsBySlug(slug: string): Promise<NewsItem | null> {
+  const data = await safeFetch<NewsItem>(`
+    *[_type == "news" && slug.current == $slug][0]{
+      "slug": slug.current,
+      title,
+      date,
+      excerpt,
+      "image": image.asset->url,
+      category,
+      content
+    }
+  `, { slug }, { tags: ['news'] })
+
+  if (data) return data
+  if (USE_SANITY_FALLBACKS) return fallbackNews.find((n) => n.slug === slug) || null
+  return null
 }
 
 export async function getActivityEvents(): Promise<ActivityEvent[]> {

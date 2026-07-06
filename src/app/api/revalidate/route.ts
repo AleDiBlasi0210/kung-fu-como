@@ -73,6 +73,7 @@ export async function POST(request: NextRequest) {
     case 'news':
       revalidateTag('news')
       revalidatePath('/news')
+      if (slug) revalidatePath(`/news/${slug}`)
       break
 
     case 'event':

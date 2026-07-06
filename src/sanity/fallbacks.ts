@@ -113,6 +113,11 @@ export const fallbackLocations: Location[] = [
       { discipline: 'Choy Li Fut', entries: ['Lunedi 20:30 - 21:30', 'Giovedi 20:30 - 21:30'] },
     ],
     order: 1,
+    homeBadge: 'Nuova sede',
+    homeBadgeHighlight: true,
+    homeShortAddress: 'Ponte Lambro (CO)',
+    homeDisciplines: 'Choy Li Fut · Tai Chi Chuan',
+    homeDays: 'Lunedì e Giovedì',
   },
   {
     id: 'como',
@@ -126,6 +131,11 @@ export const fallbackLocations: Location[] = [
       { discipline: 'Choy Li Fut', entries: ['Lunedi 19:00 - 20:30', 'Venerdi 19:00 - 20:30'] },
     ],
     order: 2,
+    homeBadge: 'Palestra Mariani',
+    homeBadgeHighlight: false,
+    homeShortAddress: 'Como (CO)',
+    homeDisciplines: 'Choy Li Fut · Tai Chi Chuan',
+    homeDays: 'Lunedì e Venerdì',
   },
   {
     id: 'albate',
@@ -139,6 +149,11 @@ export const fallbackLocations: Location[] = [
       { discipline: 'Classe Combat', entries: ['Mercoledi 21:00 - 22:00'] },
     ],
     order: 3,
+    homeBadge: 'Sede storica',
+    homeBadgeHighlight: false,
+    homeShortAddress: 'Albate, Como (CO)',
+    homeDisciplines: 'Bambini · Classe Combat',
+    homeDays: 'Lunedì, Giovedì e Mercoledì',
   },
 ]
 

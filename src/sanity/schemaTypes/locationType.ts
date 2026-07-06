@@ -38,5 +38,38 @@ export const locationType = defineType({
       ],
     }),
     defineField({ name: 'order', title: 'Order', type: 'number' }),
+
+    // ── Anteprima nella home ("Dove Ci Trovi") ──────────────
+    defineField({
+      name: 'homeBadge',
+      title: 'Home · Etichetta',
+      type: 'string',
+      description: 'Badge mostrato sulla card in homepage, es. "Nuova sede", "Sede storica", "Palestra Mariani". Se vuoto usa il sottotitolo.',
+    }),
+    defineField({
+      name: 'homeBadgeHighlight',
+      title: 'Home · Etichetta in evidenza (rossa)',
+      type: 'boolean',
+      description: 'Se attivo, il badge è rosso pieno (per la sede da mettere in risalto). Altrimenti è grigio.',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'homeShortAddress',
+      title: 'Home · Indirizzo breve',
+      type: 'string',
+      description: 'Riga breve sulla card in homepage, es. "Como (CO)". Se vuoto usa l\'indirizzo completo.',
+    }),
+    defineField({
+      name: 'homeDisciplines',
+      title: 'Home · Discipline (riga)',
+      type: 'string',
+      description: 'Es. "Choy Li Fut · Tai Chi Chuan". Se vuoto viene ricavato dagli orari.',
+    }),
+    defineField({
+      name: 'homeDays',
+      title: 'Home · Giorni (riga)',
+      type: 'string',
+      description: 'Es. "Lunedì e Giovedì". Se vuoto, la riga non viene mostrata (niente più "Da definire").',
+    }),
   ],
 })

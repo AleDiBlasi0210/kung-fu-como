@@ -22,15 +22,15 @@ export default function HeroSection({ heroImage }: { heroImage?: string }) {
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
         {/* Badge */}
-        <div className="inline-flex items-center gap-2 mb-6 border border-red/50 bg-red/10 rounded-full px-4 py-1.5">
+        <div className="inline-flex items-center gap-2 mb-6 border border-red/50 bg-red/10 rounded-full px-5 py-2">
           <span className="w-1.5 h-1.5 rounded-full bg-red flex-shrink-0" />
-          <span className="text-white/80 text-xs font-inter tracking-widest uppercase font-medium">
+          <span className="text-white/90 text-sm sm:text-base font-inter tracking-widest uppercase font-semibold">
             Hung Sing Kung Fu Schools of Italy
           </span>
         </div>
 
         {/* Main title */}
-        <h1 className="font-cinzel text-4xl sm:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-wide text-shadow-lg mb-4">
+        <h1 className="font-cinzel text-2xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight tracking-wide text-shadow-lg mb-4">
           La Fenice Bianca
           <span className="block text-red mt-1">ASD</span>
         </h1>

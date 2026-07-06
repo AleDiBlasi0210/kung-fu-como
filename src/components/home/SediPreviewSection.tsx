@@ -1,39 +1,35 @@
 import Link from 'next/link'
+import type { Location } from '@/sanity/types'
 
-const sedi = [
-  {
-    id: 'ponte-lambro',
-    name: 'Ponte Lambro',
-    badge: 'Nuova sede',
-    badgeColor: 'bg-red text-white',
-    address: 'Ponte Lambro (CO)',
-    disciplines: 'Choy Li Fut · Tai Chi Chuan',
-    days: 'Lunedì e Giovedì',
-    icon: '📍',
-  },
-  {
-    id: 'como',
-    name: 'Como',
-    badge: 'Palestra Mariani',
-    badgeColor: 'bg-white/10 text-white/70',
-    address: 'Como (CO)',
-    disciplines: 'Choy Li Fut · Tai Chi Chuan',
-    days: 'Da definire',
-    icon: '📍',
-  },
-  {
-    id: 'albate',
-    name: 'Albate',
-    badge: 'Sede storica',
-    badgeColor: 'bg-white/10 text-white/70',
-    address: 'Albate, Como (CO)',
-    disciplines: 'Choy Li Fut · Tai Chi Chuan',
-    days: 'Da definire',
-    icon: '📍',
-  },
-]
+type SedeCard = {
+  id: string
+  name: string
+  badge: string
+  badgeHighlight: boolean
+  address: string
+  disciplines: string
+  days: string
+}
 
-export default function SediPreviewSection() {
+function toCard(sede: Location): SedeCard {
+  const disciplines =
+    sede.homeDisciplines ||
+    sede.schedule.map((s) => s.discipline).filter(Boolean).join(' · ')
+
+  return {
+    id: sede.id,
+    name: sede.name,
+    badge: sede.homeBadge || sede.subtitle || '',
+    badgeHighlight: !!sede.homeBadgeHighlight,
+    address: sede.homeShortAddress || sede.address,
+    disciplines,
+    days: sede.homeDays || '',
+  }
+}
+
+export default function SediPreviewSection({ sedi }: { sedi: Location[] }) {
+  const cards = sedi.map(toCard)
+
   return (
     <section className="bg-gray-light py-20 lg:py-28">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -47,7 +43,7 @@ export default function SediPreviewSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {sedi.map((sede) => (
+          {cards.map((sede) => (
             <div
               key={sede.id}
               className="bg-[#0A0A0A] rounded-sm p-6 card-hover group border border-white/5 hover:border-red/40 transition-all duration-300"
@@ -58,15 +54,23 @@ export default function SediPreviewSection() {
                     <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
                   </svg>
                 </div>
-                <span className={`text-xs font-inter font-semibold tracking-wide px-2.5 py-1 rounded-full ${sede.badgeColor}`}>
-                  {sede.badge}
-                </span>
+                {sede.badge && (
+                  <span
+                    className={`text-xs font-inter font-semibold tracking-wide px-2.5 py-1 rounded-full ${
+                      sede.badgeHighlight ? 'bg-red text-white' : 'bg-white/10 text-white/70'
+                    }`}
+                  >
+                    {sede.badge}
+                  </span>
+                )}
               </div>
 
               <h3 className="font-cinzel text-white text-xl font-bold mb-2">{sede.name}</h3>
               <p className="text-white/50 text-sm font-inter mb-3">{sede.address}</p>
-              <p className="text-white/70 text-sm font-inter mb-1">{sede.disciplines}</p>
-              <p className="text-gray-mid text-xs font-inter">{sede.days}</p>
+              {sede.disciplines && (
+                <p className="text-white/70 text-sm font-inter mb-1">{sede.disciplines}</p>
+              )}
+              {sede.days && <p className="text-gray-mid text-xs font-inter">{sede.days}</p>}
 
               <div className="mt-5 pt-5 border-t border-white/10">
                 <Link

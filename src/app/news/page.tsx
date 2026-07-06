@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 import { getNews, getSiteCopy } from '@/sanity/content'
 
 export const metadata: Metadata = {
@@ -36,7 +37,11 @@ export default async function NewsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             {sorted.map((item) => (
-              <article key={item.slug} className="border border-gray-light rounded-sm overflow-hidden card-hover">
+              <Link
+                key={item.slug}
+                href={`/news/${item.slug}`}
+                className="group block border border-gray-light rounded-sm overflow-hidden card-hover"
+              >
                 <div className="relative h-56 overflow-hidden">
                   <div
                     className="absolute inset-0 bg-cover bg-center"
@@ -49,10 +54,16 @@ export default async function NewsPage() {
                 </div>
                 <div className="p-5">
                   <p className="text-xs uppercase tracking-widest text-gray-mid font-inter mb-2">{formatDate(item.date)}</p>
-                  <h2 className="font-cinzel text-black text-2xl leading-snug mb-3">{item.title}</h2>
-                  <p className="text-gray-mid text-sm font-inter leading-relaxed">{item.excerpt}</p>
+                  <h2 className="font-cinzel text-black text-2xl leading-snug mb-3 group-hover:text-red transition-colors">{item.title}</h2>
+                  <p className="text-gray-mid text-sm font-inter leading-relaxed mb-4">{item.excerpt}</p>
+                  <span className="text-red text-sm font-inter font-semibold inline-flex items-center gap-2 group-hover:gap-3 transition-all">
+                    Leggi tutto
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </span>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
         </div>
