@@ -39,7 +39,6 @@ const socials = [
 export default async function Footer() {
   const [siteCopy, sedi] = await Promise.all([getSiteCopy(), getLocations()])
   const year = new Date().getFullYear()
-  const studioUrl = process.env.NEXT_PUBLIC_SANITY_STUDIO_URL
 
   return (
     <footer className="bg-[#0A0A0A] text-white/70 border-t border-white/10">
@@ -148,37 +147,15 @@ export default async function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/40">
-          <div className="flex flex-col sm:items-start items-center gap-1 text-center sm:text-left">
-            <p>© {year} La Fenice Bianca ASD · Tutti i diritti riservati</p>
-            {(siteCopy.fiscalCode || siteCopy.vatNumber) && (
-              <p className="text-white/30">
-                {siteCopy.fiscalCode && <span>C.F. {siteCopy.fiscalCode}</span>}
-                {siteCopy.fiscalCode && siteCopy.vatNumber && <span className="mx-1">·</span>}
-                {siteCopy.vatNumber && <span>P.IVA {siteCopy.vatNumber}</span>}
-              </p>
-            )}
-          </div>
-          <div className="flex flex-wrap items-center justify-center gap-1 text-white/30">
-            {studioUrl && (
-              <>
-                <a
-                  href={studioUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-white transition-colors"
-                >
-                  Area Admin
-                </a>
-                <span className="text-white/50 mx-1">·</span>
-              </>
-            )}
-            <span>Affiliata</span>
-            <span className="text-white/50 mx-1">·</span>
-            <span>US Acli</span>
-            <span className="text-white/50 mx-1">·</span>
-            <span>Hung Sing Kung Fu Schools of Italy</span>
-          </div>
+        <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/40 text-center sm:text-left">
+          <p>© {year} La Fenice Bianca ASD · Tutti i diritti riservati</p>
+          {(siteCopy.fiscalCode || siteCopy.vatNumber) && (
+            <p className="text-white/30">
+              {siteCopy.fiscalCode && <span>C.F. {siteCopy.fiscalCode}</span>}
+              {siteCopy.fiscalCode && siteCopy.vatNumber && <span className="mx-1">·</span>}
+              {siteCopy.vatNumber && <span>P.IVA {siteCopy.vatNumber}</span>}
+            </p>
+          )}
         </div>
       </div>
     </footer>
