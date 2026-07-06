@@ -115,6 +115,8 @@ export type SiteCopy = {
   footerBrandTitle: string
   footerOrgLine: string
   footerDescription: string
+  fiscalCode?: string
+  vatNumber?: string
   homeCtaTitle: string
   homeCtaText: string
   sediBadge: string

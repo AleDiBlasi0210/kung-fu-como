@@ -27,7 +27,7 @@ export const fallbackHomeSettings: HomeSettings = {
     'Lo scopo della nostra scuola è la pratica e la divulgazione delle arti marziali cinesi tradizionali, in particolare lo stile Choy Li Fut e il Tai Chi Chuan stile Yang.',
   missionText2:
     "Ci rivolgiamo a coloro che vogliono avvicinarsi alla pratica di un'arte marziale tradizionale non limitandosi ad apprendere tecniche di combattimento e autodifesa, ma avendo come obiettivo un corretto sviluppo psico-fisico e un generale benessere incoraggiato da una sana pratica fisica.",
-  affiliations: ['USAcli', 'Hung Sing Kung Fu Schools of Italy', 'Grandmaster Doc Fai Wong'],
+  affiliations: ['US Acli', 'Hung Sing Kung Fu Schools of Italy', 'Grandmaster Doc Fai Wong'],
 }
 
 export const fallbackFaqs: FaqItem[] = [
@@ -247,6 +247,8 @@ export const fallbackSiteCopy: SiteCopy = {
   footerOrgLine: 'Associazione Sportiva Dilettantistica',
   footerDescription:
     "Scuola di arti marziali cinesi tradizionali a Como. Choy Li Fut e Tai Chi Chuan stile Yang, nell'ambito della Hung Sing Kung Fu Schools of Italy.",
+  fiscalCode: '',
+  vatNumber: '',
   homeCtaTitle: 'Inizia il tuo percorso',
   homeCtaText:
     'La prima lezione è completamente gratuita. Vieni a provare senza impegno e scopri la via delle arti marziali tradizionali cinesi.',

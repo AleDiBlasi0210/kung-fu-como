@@ -8,6 +8,18 @@ export const siteCopyType = defineType({
     defineField({ name: 'footerBrandTitle', title: 'Footer brand title', type: 'string' }),
     defineField({ name: 'footerOrgLine', title: 'Footer organization line', type: 'string' }),
     defineField({ name: 'footerDescription', title: 'Footer description', type: 'text', rows: 4 }),
+    defineField({
+      name: 'fiscalCode',
+      title: 'Codice Fiscale (ASD)',
+      type: 'string',
+      description: 'Codice Fiscale dell\'associazione, mostrato nel footer. Lascia vuoto per non mostrarlo.',
+    }),
+    defineField({
+      name: 'vatNumber',
+      title: 'Partita IVA (opzionale)',
+      type: 'string',
+      description: 'Partita IVA, se presente. Mostrata nel footer accanto al Codice Fiscale.',
+    }),
     defineField({ name: 'homeCtaTitle', title: 'Home CTA title', type: 'string' }),
     defineField({ name: 'homeCtaText', title: 'Home CTA text', type: 'text', rows: 3 }),
     defineField({ name: 'sediBadge', title: 'Sedi page badge', type: 'string' }),

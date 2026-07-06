@@ -1,15 +1,10 @@
 import Link from 'next/link'
-import { getSiteCopy } from '@/sanity/content'
+import { getLocations, getSiteCopy } from '@/sanity/content'
 
 const footerLinks = {
   discipline: [
     { label: 'Choy Li Fut', href: '/discipline/choy-li-fut' },
     { label: 'Tai Chi Chuan', href: '/discipline/tai-chi-chuan' },
-  ],
-  sedi: [
-    { label: 'Ponte Lambro', href: '/sedi#ponte-lambro' },
-    { label: 'Como – Palestra Mariani', href: '/sedi#como' },
-    { label: 'Albate', href: '/sedi#albate' },
   ],
   pagine: [
     { label: 'Attività', href: '/attivita' },
@@ -42,7 +37,7 @@ const socials = [
 ]
 
 export default async function Footer() {
-  const siteCopy = await getSiteCopy()
+  const [siteCopy, sedi] = await Promise.all([getSiteCopy(), getLocations()])
   const year = new Date().getFullYear()
   const studioUrl = process.env.NEXT_PUBLIC_SANITY_STUDIO_URL
 
@@ -114,10 +109,10 @@ export default async function Footer() {
               Le Nostre Sedi
             </h4>
             <ul className="space-y-2">
-              {footerLinks.sedi.map((l) => (
-                <li key={l.href}>
-                  <Link href={l.href} className="text-sm hover:text-white transition-colors">
-                    {l.label}
+              {sedi.map((sede) => (
+                <li key={sede.id}>
+                  <Link href={`/sedi#${sede.id}`} className="text-sm hover:text-white transition-colors">
+                    {sede.name}
                   </Link>
                 </li>
               ))}
@@ -154,7 +149,16 @@ export default async function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-white/40">
-          <p>© {year} La Fenice Bianca ASD · Tutti i diritti riservati</p>
+          <div className="flex flex-col sm:items-start items-center gap-1 text-center sm:text-left">
+            <p>© {year} La Fenice Bianca ASD · Tutti i diritti riservati</p>
+            {(siteCopy.fiscalCode || siteCopy.vatNumber) && (
+              <p className="text-white/30">
+                {siteCopy.fiscalCode && <span>C.F. {siteCopy.fiscalCode}</span>}
+                {siteCopy.fiscalCode && siteCopy.vatNumber && <span className="mx-1">·</span>}
+                {siteCopy.vatNumber && <span>P.IVA {siteCopy.vatNumber}</span>}
+              </p>
+            )}
+          </div>
           <div className="flex flex-wrap items-center justify-center gap-1 text-white/30">
             {studioUrl && (
               <>
@@ -171,7 +175,7 @@ export default async function Footer() {
             )}
             <span>Affiliata</span>
             <span className="text-white/50 mx-1">·</span>
-            <span>USAcli</span>
+            <span>US Acli</span>
             <span className="text-white/50 mx-1">·</span>
             <span>Hung Sing Kung Fu Schools of Italy</span>
           </div>
