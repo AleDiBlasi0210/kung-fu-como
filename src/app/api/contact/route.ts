@@ -52,9 +52,6 @@ export async function POST(request: NextRequest) {
     const emailSubject = subject?.trim() || `Nuovo messaggio dal sito — ${name}`
     const sedeLabel = sede ? (SEDE_LABELS[sede] ?? sede) : null
 
-    // Debug temporaneo: verifica quale mittente/destinatari vengono usati.
-    console.log('Contact form → from:', fromEmail, '| to:', recipients)
-
     const res = await fetch('https://api.brevo.com/v3/smtp/email', {
       method: 'POST',
       headers: {
