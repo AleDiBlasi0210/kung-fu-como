@@ -25,7 +25,7 @@ export default function HeroSection({ heroImage }: { heroImage?: string }) {
         <div className="inline-flex items-center gap-2 mb-6 border border-red/50 bg-red/10 rounded-full px-5 py-2">
           <span className="w-1.5 h-1.5 rounded-full bg-red flex-shrink-0" />
           <span className="text-white/90 text-2xl sm:text-3xl lg:text-4xl font-inter tracking-widest uppercase font-semibold lg:whitespace-nowrap">
-            Hung Sing Kung Fu Schools of Italy
+            Hung Sing Martial Arts Como
           </span>
         </div>
 

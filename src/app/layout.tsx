@@ -7,14 +7,14 @@ import Popup from '@/components/Popup'
 
 export const metadata: Metadata = {
   title: {
-    default: 'La Fenice Bianca ASD | Kung Fu Como',
+    default: 'Hung Sing Martial Arts Como | La Fenice Bianca ASD',
     template: '%s | La Fenice Bianca ASD',
   },
   description:
     'Scuola di arti marziali cinesi tradizionali a Como. Choy Li Fut e Tai Chi Chuan stile Yang. Sedi a Como, Albate e Ponte Lambro. Prova gratuita.',
   keywords: ['kung fu como', 'choy li fut', 'tai chi chuan', 'arti marziali como', 'hung sing', 'la fenice bianca'],
   openGraph: {
-    siteName: 'La Fenice Bianca ASD',
+    siteName: 'Hung Sing Martial Arts Como',
     locale: 'it_IT',
     type: 'website',
     url: 'https://www.kungfucomo.org',

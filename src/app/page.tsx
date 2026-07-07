@@ -9,7 +9,7 @@ import FaqSection from '@/components/home/FaqSection'
 import { getDisciplines, getFaqs, getHomeSettings, getLocations } from '@/sanity/content'
 
 export const metadata: Metadata = {
-  title: 'La Fenice Bianca ASD | Kung Fu Como – Choy Li Fut e Tai Chi Chuan',
+  title: 'Hung Sing Martial Arts Como | La Fenice Bianca ASD | Kung Fu Como',
   description:
     'Scuola di Kung Fu a Como. Choy Li Fut Hung Sing e Tai Chi Chuan stile Yang. Tre sedi: Como, Albate, Ponte Lambro. Prima lezione gratuita.',
 }
