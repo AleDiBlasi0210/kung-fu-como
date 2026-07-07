@@ -30,7 +30,7 @@ export default function HeroSection({ heroImage }: { heroImage?: string }) {
         </div>
 
         {/* Main title */}
-        <h1 className="font-cinzel text-xl sm:text-2xl lg:text-3xl font-bold text-white leading-tight tracking-wide text-shadow-lg mb-4">
+        <h1 className="font-cinzel text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight tracking-wide text-shadow-lg mb-4">
           La Fenice Bianca <span className="text-red">ASD</span>
         </h1>
 
