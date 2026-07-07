@@ -20,11 +20,11 @@ export default function HeroSection({ heroImage }: { heroImage?: string }) {
       {/* Red accent top bar */}
       <div className="absolute top-0 left-0 right-0 h-0.5 bg-red" aria-hidden="true" />
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20">
         {/* Badge */}
         <div className="inline-flex items-center gap-2 mb-6 border border-red/50 bg-red/10 rounded-full px-5 py-2">
           <span className="w-1.5 h-1.5 rounded-full bg-red flex-shrink-0" />
-          <span className="text-white/90 text-2xl sm:text-3xl lg:text-4xl font-inter tracking-widest uppercase font-semibold">
+          <span className="text-white/90 text-2xl sm:text-3xl lg:text-4xl font-inter tracking-widest uppercase font-semibold lg:whitespace-nowrap">
             Hung Sing Kung Fu Schools of Italy
           </span>
         </div>
