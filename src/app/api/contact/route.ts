@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { Resend } from 'resend'
+import sgMail from '@sendgrid/mail'
 import { sanityClient } from '@/sanity/client'
 
 type ContactSettings = {
@@ -15,13 +15,13 @@ const SEDE_LABELS: Record<string, string> = {
 }
 
 export async function POST(request: NextRequest) {
-  const apiKey = process.env.RESEND_API_KEY
+  const apiKey = process.env.SENDGRID_API_KEY
   if (!apiKey) {
-    console.error('RESEND_API_KEY non configurata')
+    console.error('SENDGRID_API_KEY non configurata')
     return NextResponse.json({ ok: false, message: 'Configurazione server mancante' }, { status: 500 })
   }
 
-  const resend = new Resend(apiKey)
+  sgMail.setApiKey(apiKey)
 
   try {
     const body = await request.json()
@@ -49,13 +49,15 @@ export async function POST(request: NextRequest) {
     }
 
     const fromName = settings?.fromName || 'Kung Fu Como'
-    const fromEmail = settings?.fromEmail || 'onboarding@resend.dev'
+    const fromEmail = settings?.fromEmail || 'noreply@kungfucomo.org'
     const emailSubject = subject?.trim() || `Nuovo messaggio dal sito — ${name}`
     const sedeLabel = sede ? (SEDE_LABELS[sede] ?? sede) : null
 
-    await resend.emails.send({
-      from: `${fromName} <${fromEmail}>`,
+    // sendMultiple invia una copia separata a ciascun destinatario
+    // (gli indirizzi non si vedono tra loro).
+    await sgMail.sendMultiple({
       to: recipients,
+      from: { email: fromEmail, name: fromName },
       replyTo: email,
       subject: emailSubject,
       html: buildEmailHtml({ name, email, phone, sede: sedeLabel, subject, message }),
@@ -63,8 +65,10 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ ok: true })
   } catch (error) {
-    console.error('Errore invio email:', error)
-    return NextResponse.json({ ok: false, message: 'Errore interno' }, { status: 500 })
+    // SendGrid lancia un'eccezione con i dettagli in response.body.
+    const details = (error as { response?: { body?: unknown } })?.response?.body
+    console.error('Errore invio email (SendGrid):', details ?? error)
+    return NextResponse.json({ ok: false, message: 'Invio email non riuscito' }, { status: 502 })
   }
 }
 
