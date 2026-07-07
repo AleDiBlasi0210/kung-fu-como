@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import sgMail from '@sendgrid/mail'
 import { sanityClient } from '@/sanity/client'
 
 type ContactSettings = {
@@ -15,13 +14,11 @@ const SEDE_LABELS: Record<string, string> = {
 }
 
 export async function POST(request: NextRequest) {
-  const apiKey = process.env.SENDGRID_API_KEY
+  const apiKey = process.env.BREVO_API_KEY
   if (!apiKey) {
-    console.error('SENDGRID_API_KEY non configurata')
+    console.error('BREVO_API_KEY non configurata')
     return NextResponse.json({ ok: false, message: 'Configurazione server mancante' }, { status: 500 })
   }
-
-  sgMail.setApiKey(apiKey)
 
   try {
     const body = await request.json()
@@ -58,22 +55,33 @@ export async function POST(request: NextRequest) {
     // Debug temporaneo: verifica quale mittente/destinatari vengono usati.
     console.log('Contact form → from:', fromEmail, '| to:', recipients)
 
-    // sendMultiple invia una copia separata a ciascun destinatario
-    // (gli indirizzi non si vedono tra loro).
-    await sgMail.sendMultiple({
-      to: recipients,
-      from: { email: fromEmail, name: fromName },
-      replyTo: email,
-      subject: emailSubject,
-      html: buildEmailHtml({ name, email, phone, sede: sedeLabel, subject, message }),
+    const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+      method: 'POST',
+      headers: {
+        'api-key': apiKey,
+        'content-type': 'application/json',
+        accept: 'application/json',
+      },
+      body: JSON.stringify({
+        sender: { name: fromName, email: fromEmail },
+        to: recipients.map((to) => ({ email: to })),
+        replyTo: { email },
+        subject: emailSubject,
+        htmlContent: buildEmailHtml({ name, email, phone, sede: sedeLabel, subject, message }),
+      }),
+      cache: 'no-store',
     })
+
+    if (!res.ok) {
+      const details = await res.text().catch(() => '')
+      console.error('Errore invio email (Brevo):', res.status, details)
+      return NextResponse.json({ ok: false, message: 'Invio email non riuscito' }, { status: 502 })
+    }
 
     return NextResponse.json({ ok: true })
   } catch (error) {
-    // SendGrid lancia un'eccezione con i dettagli in response.body.
-    const details = (error as { response?: { body?: unknown } })?.response?.body
-    console.error('Errore invio email (SendGrid):', details ?? error)
-    return NextResponse.json({ ok: false, message: 'Invio email non riuscito' }, { status: 502 })
+    console.error('Errore invio email:', error)
+    return NextResponse.json({ ok: false, message: 'Errore interno' }, { status: 500 })
   }
 }
 
