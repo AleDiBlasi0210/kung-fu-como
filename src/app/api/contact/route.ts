@@ -35,7 +35,9 @@ export async function POST(request: NextRequest) {
     }
 
     const settings: ContactSettings | null = await sanityClient.fetch(
-      `*[_type == "contactSettings"][0]{ recipientEmails, fromName, fromEmail }`
+      `*[_type == "contactSettings"][0]{ recipientEmails, fromName, fromEmail }`,
+      {},
+      { cache: 'no-store' },
     )
 
     const recipients = settings?.recipientEmails?.map((r) => r.email).filter(Boolean)
@@ -52,6 +54,9 @@ export async function POST(request: NextRequest) {
     const fromEmail = settings?.fromEmail || 'noreply@kungfucomo.org'
     const emailSubject = subject?.trim() || `Nuovo messaggio dal sito — ${name}`
     const sedeLabel = sede ? (SEDE_LABELS[sede] ?? sede) : null
+
+    // Debug temporaneo: verifica quale mittente/destinatari vengono usati.
+    console.log('Contact form → from:', fromEmail, '| to:', recipients)
 
     // sendMultiple invia una copia separata a ciascun destinatario
     // (gli indirizzi non si vedono tra loro).
