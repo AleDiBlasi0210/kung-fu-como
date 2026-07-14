@@ -70,7 +70,7 @@ export default function Header() {
             </div>
             <div className="hidden sm:block">
               <p className="text-white font-cinzel font-bold text-sm lg:text-base leading-tight tracking-wider">
-                La Fenice Bianca
+                Hung Sing Martial Arts
               </p>
               <p className="text-gray-mid text-xs tracking-widest uppercase">ASD · Kung Fu Como</p>
             </div>
