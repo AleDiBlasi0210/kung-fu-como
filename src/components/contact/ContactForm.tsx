@@ -1,9 +1,14 @@
 'use client'
 
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useRef, useState } from 'react'
 
 export default function ContactForm() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
+  const mountTime = useRef(0)
+
+  useEffect(() => {
+    mountTime.current = Date.now()
+  }, [])
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -23,6 +28,8 @@ export default function ContactForm() {
           sede: data.get('sede'),
           subject: data.get('subject'),
           message: data.get('message'),
+          website: data.get('website'),
+          elapsedMs: Date.now() - mountTime.current,
         }),
       })
 
@@ -39,6 +46,12 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {/* Honeypot anti-spam: invisibile agli utenti, compilato solo dai bot */}
+      <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, overflow: 'hidden' }}>
+        <label htmlFor="website">Sito web</label>
+        <input id="website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label htmlFor="name" className="block text-sm font-inter font-medium text-black mb-1.5">

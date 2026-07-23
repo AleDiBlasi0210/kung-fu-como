@@ -24,6 +24,14 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { name, email, phone, sede, subject, message } = body as Record<string, string>
 
+    // Anti-spam: honeypot (campo nascosto) e invio troppo rapido (< 2s).
+    // In caso di bot rispondiamo "ok" senza inviare, per non insospettirlo.
+    const honeypot = typeof body.website === 'string' ? body.website.trim() : ''
+    const elapsedMs = typeof body.elapsedMs === 'number' ? body.elapsedMs : undefined
+    if (honeypot !== '' || (typeof elapsedMs === 'number' && elapsedMs < 2000)) {
+      return NextResponse.json({ ok: true })
+    }
+
     if (!name?.trim() || !email?.trim() || !message?.trim()) {
       return NextResponse.json(
         { ok: false, message: 'Campi obbligatori mancanti' },
@@ -47,6 +55,15 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Override SOLO per test in sviluppo: se impostata CONTACT_TEST_RECIPIENT,
+    // le email vanno solo a quell'indirizzo (mai ai destinatari reali).
+    // In produzione questa variabile non deve esistere.
+    const testRecipient = process.env.CONTACT_TEST_RECIPIENT?.trim()
+    const finalRecipients = testRecipient ? [testRecipient] : recipients
+    if (testRecipient) {
+      console.log('[TEST] CONTACT_TEST_RECIPIENT attivo → invio solo a:', finalRecipients)
+    }
+
     const fromName = settings?.fromName || 'Kung Fu Como'
     const fromEmail = settings?.fromEmail || 'noreply@kungfucomo.org'
     const emailSubject = subject?.trim() || `Nuovo messaggio dal sito — ${name}`
@@ -61,7 +78,7 @@ export async function POST(request: NextRequest) {
       },
       body: JSON.stringify({
         sender: { name: fromName, email: fromEmail },
-        to: recipients.map((to) => ({ email: to })),
+        to: finalRecipients.map((to) => ({ email: to })),
         replyTo: { email },
         subject: emailSubject,
         htmlContent: buildEmailHtml({ name, email, phone, sede: sedeLabel, subject, message }),
